@@ -3,7 +3,6 @@ import './index.css'
 import App from './App.jsx'
 import Home from './pages/Home.jsx'
 import Profile from './pages/Profile.jsx'
-import Login from './components/Login.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Register from './components/Register.jsx'
 
