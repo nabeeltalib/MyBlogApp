@@ -1,11 +1,13 @@
-import React from 'react'
+import React from "react";
 
 const Profile = () => {
   return (
     <>
-    <div>Profile New</div>
+      <div className="p-5 bg-slate-50">
+        <h1 className="text-4xl font-bold">Profile</h1>
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default Profile
+export default Profile;
