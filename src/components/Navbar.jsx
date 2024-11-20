@@ -1,20 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import img from "../assets/NabeelLogo.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth } from "../config/firebase";
-
+import {onAuthStateChanged } from "firebase/auth";
 
 const Navbar = () => {
   const [showLogin, setShowLogin] = useState(false);
  const [email, setEmail] = useState('')
  const [password, setPassword] = useState('')
+ const [userName, setUsername] = useState('')
+ const navigate = useNavigate()
   const LoginHandler = () =>{
    signInWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
     const user = userCredential.user;
     toast.success(`login successfully`)
+    setTimeout(()=>{
+     navigate('/')
+    },2000)
+    console.log(user)
   })
   .catch((error) => {
     const errorCode = error.code;
@@ -22,6 +28,32 @@ const Navbar = () => {
     toast.error(errorMessage)
   });
   }
+
+  const logoutHandler = () =>{
+    signOut(auth).then(() => {
+    toast.success('user logout succeessfully')
+    window.location.reload()
+    }).catch((error) => {
+      console.log(error)
+    });
+    
+  }
+
+useEffect(()=>{
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      console.log(user)
+      setUsername(user.displayName)
+      // navigate('/')
+      // ...
+    } else {
+      // User is signed out
+      // ...
+      console.log("no user")
+      // navigate('register')
+    }
+  });
+},[])
 
 
   return (
@@ -35,13 +67,9 @@ const Navbar = () => {
             <div
               tabIndex={0}
               role="button"
-              className="btn btn-ghost btn-circle avatar"
             >
-              <div className="w-10 rounded-full">
-                <img
-                  alt="Tailwind CSS Navbar component"
-                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                />
+              <div>
+                  {userName ? userName : 'No User'}
               </div>
             </div>
             <ul
@@ -55,13 +83,17 @@ const Navbar = () => {
                 <Link to={"dashboard"}>Dashboard</Link>
               </li>
               <li>
+                {userName ? <a onClick={logoutHandler}>
+                  Log out
+                </a> : 
                 <a
                   onClick={() =>
                     document.getElementById("my_modal_3").showModal()
                   }
                 >
-                  Log In
+                  Log In 
                 </a>
+                }
               </li>
             </ul>
           </div>
