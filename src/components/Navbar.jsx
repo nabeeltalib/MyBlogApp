@@ -16,7 +16,7 @@ const Navbar = () => {
    signInWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
     const user = userCredential.user;
-    toast.success(`login successfully`)
+    toast.success(`${user.displayName} login successfully`)
     setTimeout(()=>{
      navigate('/')
     },2000)

@@ -1,19 +1,52 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { collection, addDoc,  onSnapshot, query  } from "firebase/firestore"; 
+import { db } from '../config/firebase';
+import toast, { Toaster } from 'react-hot-toast';
 
 const Dashboard = () => {
+  
+  const titleInput = useRef(null);
+  const descriptionInput = useRef(null);
+  const [getblogdata, setgetblogdata] = useState([])
 
-  const titleInput = useRef(" ");
-  const descriptionInput = useRef(" ");
 
-
-
-  const UploadBlog = ()=> {
-    console.log("Let's", titleInput.current.value);
-    console.log("Let's", descriptionInput.current.value);
-    titleInput.current.value = "";
-    descriptionInput.current.value = "";
-
+  const UploadBlog = async ()=> {
+    const title = titleInput.current.value;
+    const description = descriptionInput.current.value;
+    
+   try {
+    const docRef = await addDoc(collection(db, "BlogPost"), {
+      Title: title,
+      Description: description
+    });
+    console.log("Document written with ID: ", docRef.id);
+    toast.success("Blog Post Successfully")
+   } catch (error) {
+    console.log(error.message)
+   }
   }
+
+
+ 
+
+
+useEffect(()=>{
+  const q = query(collection(db, "BlogPost"));
+  const unsubscribe = onSnapshot(q, (querySnapshot) => {
+    const blogData = [];
+    querySnapshot.forEach((doc) => {
+      blogData.push({
+        id: doc.id,
+        ...doc.data(), // Spread the data into an object
+      });
+    });
+    setgetblogdata(blogData); // Update the state with the real-time data
+  });
+},[])
+
+
+
+
   return (
     <>
         <div className="p-5 bg-slate-50">
@@ -25,12 +58,15 @@ const Dashboard = () => {
         <textarea className="textarea h-36 input input-bordered" placeholder="Whats In Your Mind" ref={descriptionInput}></textarea>
         </div>
         <button className="btn btn-success mt-5" onClick={UploadBlog}>Publish Blog</button>
+        <Toaster/>
         </div>
-        <div className="p-5 bg-slate-50">
+        {getblogdata.map((item, index)=>{
+          return(
+        <div className="p-5 bg-slate-50" key={index}>
           <div className="card bg-base-100 w-96 shadow-xl">
               <div className="card-body">
-                  <h2 className="card-title">Card title!</h2>
-                  <p>If a dog chews shoes whose shoes does he choose?</p>
+                  <h2 className="card-title">{item.Title}</h2>
+                  <p>{item.Description}</p>
                     <div className="card-actions justify-end">
                       <button className="btn btn-primary mr-5">Edit</button>
                       <button className="btn btn-primary">Delete</button>
@@ -38,6 +74,8 @@ const Dashboard = () => {
               </div>
           </div>
         </div>
+          )
+        })}
     </>
   )
 }

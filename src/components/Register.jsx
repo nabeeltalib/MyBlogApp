@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import toast, { Toaster } from 'react-hot-toast';
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { useNavigate } from "react-router-dom";
 
@@ -15,8 +15,14 @@ const navigate = useNavigate()
     createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user;
-      const userdisplayname = auth.currentUser.displayName = username
-      toast.success(`${userdisplayname} You Have Register Successfully`)
+      updateProfile(user, {
+        displayName: username,
+      }).then(() => {
+        console.log("User display name set!");
+      }).catch((error) => {
+        console.error("Error updating display name: ", error);
+      });
+      toast.success(`${username} You Have Register Successfully`)
       console.log(user)
       setTimeout(()=>{
         navigate('/')
