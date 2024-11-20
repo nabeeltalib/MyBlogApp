@@ -1,23 +1,29 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { collection, addDoc,  onSnapshot, query  } from "firebase/firestore"; 
-import { db } from '../config/firebase';
+import { collection, addDoc,  onSnapshot, query, where  } from "firebase/firestore"; 
+import { auth, db } from '../config/firebase';
 import toast, { Toaster } from 'react-hot-toast';
-
+import Navbar from '../components/Navbar'
+import { onAuthStateChanged } from 'firebase/auth';
 const Dashboard = () => {
-  
   const titleInput = useRef(null);
   const descriptionInput = useRef(null);
+
+  
   const [getblogdata, setgetblogdata] = useState([])
 
 
   const UploadBlog = async ()=> {
     const title = titleInput.current.value;
     const description = descriptionInput.current.value;
-    
+   if(!title ){
+    return toast.error('plz add title')
+   }
+
    try {
     const docRef = await addDoc(collection(db, "BlogPost"), {
       Title: title,
-      Description: description
+      Description: description,
+      uid: auth.currentUser.uid
     });
     console.log("Document written with ID: ", docRef.id);
     toast.success("Blog Post Successfully")
@@ -25,13 +31,13 @@ const Dashboard = () => {
     console.log(error.message)
    }
   }
-
-
  
-
-
-useEffect(()=>{
-  const q = query(collection(db, "BlogPost"));
+  useEffect(()=>{
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+      const userId = user.uid
+     
+  const q = query(collection(db, "BlogPost"), where('uid', "==", userId));
   const unsubscribe = onSnapshot(q, (querySnapshot) => {
     const blogData = [];
     querySnapshot.forEach((doc) => {
@@ -42,6 +48,8 @@ useEffect(()=>{
     });
     setgetblogdata(blogData); // Update the state with the real-time data
   });
+}
+}); 
 },[])
 
 
@@ -49,6 +57,7 @@ useEffect(()=>{
 
   return (
     <>
+     <Navbar/>
         <div className="p-5 bg-slate-50">
             <h1 className="text-4xl font-bold">Dashboard</h1>
         </div>
@@ -60,10 +69,10 @@ useEffect(()=>{
         <button className="btn btn-success mt-5" onClick={UploadBlog}>Publish Blog</button>
         <Toaster/>
         </div>
+        <div className="flex flex-row gap-10 p-5 bg-slate-50">
         {getblogdata.map((item, index)=>{
           return(
-        <div className="p-5 bg-slate-50" key={index}>
-          <div className="card bg-base-100 w-96 shadow-xl">
+          <div className="card bg-base-100 w-96 shadow-xl" key={index}>
               <div className="card-body">
                   <h2 className="card-title">{item.Title}</h2>
                   <p>{item.Description}</p>
@@ -73,9 +82,9 @@ useEffect(()=>{
                     </div>
               </div>
           </div>
-        </div>
           )
         })}
+        </div>
     </>
   )
 }

@@ -42,7 +42,6 @@ const Navbar = () => {
 useEffect(()=>{
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      console.log(user)
       setUsername(user.displayName)
       // navigate('/')
       // ...
@@ -50,7 +49,7 @@ useEffect(()=>{
       // User is signed out
       // ...
       console.log("no user")
-      // navigate('register')
+      navigate('/register')
     }
   });
 },[])
