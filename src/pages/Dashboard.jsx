@@ -33,10 +33,9 @@ const Dashboard = () => {
   }
  
   useEffect(()=>{
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-      const userId = user.uid
-     
+  onAuthStateChanged(auth, (user) => {
+  if (user) {
+  const userId = user.uid
   const q = query(collection(db, "BlogPost"), where('uid', "==", userId));
   const unsubscribe = onSnapshot(q, (querySnapshot) => {
     const blogData = [];
