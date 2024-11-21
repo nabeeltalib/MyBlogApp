@@ -4,8 +4,6 @@ import { auth, db } from '../config/firebase';
 import toast, { Toaster } from 'react-hot-toast';
 import Navbar from '../components/Navbar';
 import { onAuthStateChanged } from 'firebase/auth';
-import Navbar from '../components/Navbar'
-import { onAuthStateChanged } from 'firebase/auth';
 
 
 const Dashboard = () => {
