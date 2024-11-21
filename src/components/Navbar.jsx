@@ -18,6 +18,23 @@ const Navbar = () => {
     });
   }
 
+<<<<<<< HEAD
+=======
+useEffect(()=>{
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      setUsername(user.displayName)
+      // navigate('/')
+      // ...
+    } else {
+      // User is signed out
+      // ...
+      console.log("no user")
+      navigate('/register')
+    }
+  });
+},[])
+>>>>>>> 13dd63d0345243cb50319de6a918421231bbe2c7
 
   useEffect(()=>{
     onAuthStateChanged(auth, (user) => {

@@ -2,22 +2,35 @@ import React, { useEffect, useRef, useState } from 'react'
 import { collection, addDoc,  onSnapshot, query, where  } from "firebase/firestore"; 
 import { auth, db } from '../config/firebase';
 import toast, { Toaster } from 'react-hot-toast';
+<<<<<<< HEAD
 import Navbar from '../components/Navbar';
 import { onAuthStateChanged } from 'firebase/auth';
 
+=======
+import Navbar from '../components/Navbar'
+import { onAuthStateChanged } from 'firebase/auth';
+>>>>>>> 13dd63d0345243cb50319de6a918421231bbe2c7
 const Dashboard = () => {
-  
   const titleInput = useRef(null);
   const descriptionInput = useRef(null);
+
+  
   const [getblogdata, setgetblogdata] = useState([])
 
 
   const UploadBlog = async ()=> {
     const title = titleInput.current.value;
     const description = descriptionInput.current.value;
+<<<<<<< HEAD
     if(!title || !description){
       return toast.error("Title or Description required")
     }
+=======
+   if(!title ){
+    return toast.error('plz add title')
+   }
+
+>>>>>>> 13dd63d0345243cb50319de6a918421231bbe2c7
    try {
     const docRef = await addDoc(collection(db, "BlogPost"), {
       Title: title,
@@ -30,6 +43,7 @@ const Dashboard = () => {
     console.log(error.message)
    }
   }
+<<<<<<< HEAD
 
   const deleteBlog = ()=> {
     console.log("Bolg delete")
@@ -51,10 +65,26 @@ useEffect(()=>{
           ...doc.data(),
         });
         console.log("DocID: ", doc.id)
+=======
+ 
+  useEffect(()=>{
+  onAuthStateChanged(auth, (user) => {
+  if (user) {
+  const userId = user.uid
+  const q = query(collection(db, "BlogPost"), where('uid', "==", userId));
+  const unsubscribe = onSnapshot(q, (querySnapshot) => {
+    const blogData = [];
+    querySnapshot.forEach((doc) => {
+      blogData.push({
+        id: doc.id,
+        ...doc.data(), // Spread the data into an object
+>>>>>>> 13dd63d0345243cb50319de6a918421231bbe2c7
       });
       setgetblogdata(blogData);
     });
   });
+}
+}); 
 },[])
 
 
@@ -62,7 +92,11 @@ useEffect(()=>{
 
   return (
     <>
+<<<<<<< HEAD
         <Navbar />
+=======
+     <Navbar/>
+>>>>>>> 13dd63d0345243cb50319de6a918421231bbe2c7
         <div className="p-5 bg-slate-50">
             <h1 className="text-4xl font-bold text-center">Dashboard</h1>
         </div>
@@ -74,8 +108,13 @@ useEffect(()=>{
         <button className="btn btn-success mt-5 text-white" onClick={UploadBlog}>Publish Blog</button>
         <Toaster/>
         </div>
+<<<<<<< HEAD
         <div className="p-5 flex flex-row gap-10 bg-slate-50" >
         {auth.currentUser && getblogdata.map((item, index)=>{
+=======
+        <div className="flex flex-row gap-10 p-5 bg-slate-50">
+        {getblogdata.map((item, index)=>{
+>>>>>>> 13dd63d0345243cb50319de6a918421231bbe2c7
           return(
           <div className="card bg-base-100 w-96 shadow-xl" key={index}>
               <div className="card-body">
