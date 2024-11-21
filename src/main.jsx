@@ -6,6 +6,8 @@ import Profile from "./pages/Profile.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Register from "./components/Register.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
+import Login from "./components/Login.jsx";
+import ProtectedRoutes from "./components/ProtectedRoutes.jsx";
 
 const router = createBrowserRouter([
   {
@@ -18,15 +20,19 @@ const router = createBrowserRouter([
       },
       {
         path: "profile",
-        element: <Profile />,
+        element: <ProtectedRoutes component={<Profile/>}/>,
       },
       {
         path: "register",
         element: <Register />,
       },
       {
+        path: "login",
+        element: <Login />,
+      },
+      {
         path: "dashboard",
-        element: <Dashboard />,
+        element: <ProtectedRoutes component={<Dashboard/>}/>,
       },
     ],
   },
