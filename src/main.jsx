@@ -8,6 +8,7 @@ import Register from "./components/Register.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Login from "./components/Login.jsx";
 import ProtectedRoutes from "./components/ProtectedRoutes.jsx";
+import Single from "./pages/Single.jsx";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
         path: "dashboard",
         element: <ProtectedRoutes component={<Dashboard/>}/>,
       },
+      {
+      path: "single",
+      element: <ProtectedRoutes component={<Single/>}/>,
+    }
     ],
   },
 ]);

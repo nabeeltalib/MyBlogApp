@@ -80,12 +80,16 @@ const Dashboard = () => {
         <button className="btn btn-success mt-5 text-white" onClick={UploadBlog}>Publish Blog</button>
         <Toaster/>
         </div>
-        <div className="p-5 flex flex-row gap-10 bg-slate-50" >
-              {auth.currentUser && getblogdata.map((item, index)=>{
-                    <div className="flex flex-row gap-10 p-5 bg-slate-50">
+        <div className="p-5 flex flex-col gap-10 bg-slate-50" >
+
                     {getblogdata.map((item, index)=>{
                       return(
-                      <div className="card bg-base-100 w-96 shadow-xl" key={index}>
+                      <div className="card card-side bg-base-100 shadow-xl" key={index}>
+                          <figure>
+                              <img
+                                src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
+                                alt="Movie" />
+                          </figure>
                           <div className="card-body">
                               <h2 className="card-title">{item.Title}</h2>
                               <p>{item.Description}</p>
@@ -96,8 +100,7 @@ const Dashboard = () => {
                           </div>
                       </div>
                       )
-                    })}
-                    </div>
+
                     })}
         </div>
                   

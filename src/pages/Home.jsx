@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import { collection, getDocs, onSnapshot, query } from "firebase/firestore";
 import { db } from '../config/firebase';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
 
@@ -16,6 +17,7 @@ const Home = () => {
               id: doc.id,
               ...doc.data(),
             });
+            // console.log("New ", blogData.metadata.creationTime)
             console.log("DocID: ", doc.id)
           });
           setAllblogs(blogData);
@@ -26,22 +28,31 @@ const Home = () => {
   return (
     <>
         <Navbar />
-        <div className="p-5 flex flex-row gap-10 bg-slate-50" >
-        {allblogs.map((item, index)=>{
-          return(
-          <div className="card bg-base-100 w-96 shadow-xl" key={index}>
-              <div className="card-body">
-                  <h2 className="card-title">{item.Title}</h2>
-                  <p>{item.Description}</p>
+        <div className=" bg-slate-50" >
+          <div className="flex flex-col p-5 gap-10 container mx-auto">
+              {allblogs.map((item, index)=>{
+                return(
+                  <div className="card card-side bg-base-100 shadow-xl" key={index}>
+                  <figure>
+                    <img
+                      src="https://img.daisyui.com/images/stock/photo-1635805737707-575885ab0820.webp"
+                      alt="Movie" />
+                  </figure>
+                  <div className="card-body">
+                    <h2 className="card-title text-2xl">{item.Title}</h2>
+                    <p>{item.Description}</p>
                     <div className="card-actions justify-end">
-                      <button className="btn btn-primary mr-5">Edit</button>
-                      <button className="btn btn-primary">Delete</button>
+                    <div className="card-actions justify-end py-5">
+                           <a><Link to={"/single"}>See all Blogs from this user</Link></a>
                     </div>
-              </div>
+                  </div>
+                </div>
+                </div>
+                )
+              })}
           </div>
-          )
-        })}
         </div>
+
     </>
   )
 }

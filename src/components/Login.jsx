@@ -38,10 +38,10 @@ const Login = () => {
   return (
     <>
     <div className="flex">
-      <div className="flex-1 w-64">
-        <img src={img} alt="" className="h-lvh"/>
+      <div className="flex flex-1 w-64">
+        <img src={img} alt=""/>
       </div>
-    <div className="gap-2 p-5 flex-1 w-32 justify-center flex-col items-center">
+    <div className="gap-2 p-5 flex flex-1 w-32 justify-center flex-col items-center bg-slate-100">
             <h1 className="text-center font-bold mb-5">
               Log In To Your Account
             </h1>
@@ -72,14 +72,14 @@ const Login = () => {
               </svg>
               <input type="password" className="grow" value={password} onChange={(e)=> setPassword(e.target.value)}/>
             </label>
-            <button className="btn btn-outline btn-info btn-block" onClick={LoginHandler}>
+            <button className="btn btn-outline btn-info" onClick={LoginHandler}>
               Login
             </button>
             <Toaster/>
             <br />
           <p className="text-center">
             If You Have No Account!{" "}
-            <Link className="font-bold" to={"register"}>
+            <Link className="font-bold" to={"/register"}>
               SignUp
             </Link>
           </p>
