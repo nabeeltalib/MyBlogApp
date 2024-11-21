@@ -18,8 +18,6 @@ const Navbar = () => {
     });
   }
 
-<<<<<<< HEAD
-=======
 useEffect(()=>{
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -34,7 +32,7 @@ useEffect(()=>{
     }
   });
 },[])
->>>>>>> 13dd63d0345243cb50319de6a918421231bbe2c7
+
 
   useEffect(()=>{
     onAuthStateChanged(auth, (user) => {
